@@ -16,14 +16,22 @@ const operations = [
   [-1, 0]
 ];
 
-const generateEmptyGrid = () => {
+const generateGrid = ({ random = false }: { random: boolean }) => {
   const rows = [];
+
   for (let i = 0; i < numRows; i++) {
-    rows.push(Array.from(Array(numCols), () => 0));
+    rows.push(
+      Array.from(Array(numCols), () =>
+        random ? (Math.random() > 0.7 ? 1 : 0) : 0
+      )
+    );
   }
 
   return rows;
 };
+
+const generateEmptyGrid = () => generateGrid({ random: false });
+const generateRandomGrid = () => generateGrid({ random: true });
 
 const App: React.FC = () => {
   const [grid, setGrid] = useState(() => {
@@ -119,14 +127,7 @@ const App: React.FC = () => {
         </a>
         <a
           onClick={() => {
-            const rows = [];
-            for (let i = 0; i < numRows; i++) {
-              rows.push(
-                Array.from(Array(numCols), () => (Math.random() > 0.7 ? 1 : 0))
-              );
-            }
-
-            setGrid(rows);
+            setGrid(generateRandomGrid());
           }}
           href="#"
           className="btn random"
